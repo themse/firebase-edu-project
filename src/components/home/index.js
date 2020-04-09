@@ -14,8 +14,8 @@ export const Home = ({ users = {}, user = null }) => {
           <p className="display-4 m-2">All users:</p>
           <div className="row">
             {Object.entries(users).map(([key, user]) => (
-              <div className="col-sm-3">
-                <ProfileCard key={key} user={user} />
+              <div key={key} className="col-sm-3">
+                <ProfileCard user={user} />
               </div>
             ))}
           </div>

@@ -74,7 +74,11 @@ export const App = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                {currentUser ? <SignOut /> : <SignIn />}
+                {currentUser ? (
+                  <SignOut onClick={() => setCurrentUser(null)} />
+                ) : (
+                  <SignIn />
+                )}
               </li>
             </ul>
           </div>
