@@ -27,16 +27,33 @@ export const App = () => {
     });
 
     auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      setUserRef(usersRef.child(user.uid));
-
+      if (user) {
+        setCurrentUser(user);
+        setUserRef(usersRef.child(user.uid));
+      }
 
       // TODO ordering don't work
       restaurantRef.orderByChild("name").on("value", (snapshot) => {
         setRestaurant([...Object.entries(snapshot.val())]);
       });
+
+      usersRef.on("value", (snapshot) => {
+        setUsers(snapshot.val());
+      });
     });
   }, []);
+
+  useEffect(() => {
+    if (userRef && currentUser) {
+      userRef.once("value", (snapshot) => {
+        if (snapshot.val()) {
+          return;
+        }
+        const { displayName, photoURL, uid, email } = currentUser;
+        userRef.set({ displayName, photoURL, uid, email });
+      });
+    }
+  }, [userRef]);
 
   return isLoading ? (
     <Loader />
@@ -67,7 +84,7 @@ export const App = () => {
             <Restaurant restaurants={restaurants} user={currentUser} />
           </PrivateRoute>
           <Route path="/">
-            <Home user={currentUser} />
+            <Home user={currentUser} users={users} />
           </Route>
         </Switch>
       </div>
