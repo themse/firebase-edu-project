@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { database, storage } from "../../common/firebase";
 
 export const NewRestaurant = ({ user }) => {
@@ -8,6 +8,8 @@ export const NewRestaurant = ({ user }) => {
   const [name, setName] = useState("");
   const [file, setFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+
+  const inputFileRef = useRef(null);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -21,12 +23,14 @@ export const NewRestaurant = ({ user }) => {
     newRestaurant.imageUrl = await storageRef
       .child(file.name)
       .put(file, { contentType: file.type })
-      .then(snapshot => snapshot.ref.getDownloadURL());
-      
+      .then((snapshot) => snapshot.ref.getDownloadURL());
+
     restaurantsRef.push(newRestaurant);
+
     setName("");
     setFile(null);
     setImagePreview(null);
+    inputFileRef.current.value = "";
   };
 
   const onChange = (event) => {
@@ -78,6 +82,7 @@ export const NewRestaurant = ({ user }) => {
           type="file"
           className="form-control-file"
           id="file-upload"
+          ref={inputFileRef}
           onChange={onFileChange}
         />
       </div>
