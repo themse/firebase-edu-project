@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { database, storage } from "../../common/firebase";
+import { Loader } from "../loader";
 
 export const NewRestaurant = ({ user }) => {
   const restaurantsRef = database.ref("/restaurants");
@@ -8,6 +9,7 @@ export const NewRestaurant = ({ user }) => {
   const [name, setName] = useState("");
   const [file, setFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputFileRef = useRef(null);
 
@@ -20,10 +22,21 @@ export const NewRestaurant = ({ user }) => {
     }
     newRestaurant.name = name;
 
-    newRestaurant.imageUrl = await storageRef
-      .child(file.name)
-      .put(file, { contentType: file.type })
-      .then((snapshot) => snapshot.ref.getDownloadURL());
+    if (file) {
+      const uploadTask = storageRef
+        .child(file.name)
+        .put(file, { contentType: file.type });
+
+      uploadTask.on("state_changed", (snapshot) => {
+        const download =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setIsLoading(download !== 100);
+      });
+
+      newRestaurant.imageUrl = await uploadTask.then((snapshot) =>
+        snapshot.ref.getDownloadURL()
+      );
+    }
 
     restaurantsRef.push(newRestaurant);
 
@@ -89,6 +102,7 @@ export const NewRestaurant = ({ user }) => {
       <button type="submit" className="btn btn-primary">
         Submit
       </button>
+      {isLoading && <Loader styles={{ height: "auto", margin: "10px" }} />}
     </form>
   );
 };

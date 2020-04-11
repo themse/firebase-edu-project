@@ -1,10 +1,10 @@
 import React from "react";
 
-export const Loader = () => {
+export const Loader = ({ styles = {} }) => {
   return (
     <div
       className="d-flex align-items-center justify-content-center"
-      style={{ height: "100vh" }}
+      style={{ height: "100vh", ...styles }}
     >
       <div className="spinner-grow text-primary" role="status">
         <span className="sr-only">Loading...</span>
