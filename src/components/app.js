@@ -5,6 +5,7 @@ import { SignIn } from "./auth/sing-in";
 import { SignOut } from "./auth/sign-out";
 import { Restaurant } from "./restaurant";
 import { Home } from "./home";
+import { Chat } from "./chat";
 import { PrivateRoute } from "../common/middleware/private-route";
 import { Loader } from "../components/loader";
 
@@ -74,6 +75,11 @@ export const App = () => {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link" to="/chat">
+                  Chat
+                </Link>
+              </li>
+              <li className="nav-item">
                 {currentUser ? (
                   <SignOut onClick={() => setCurrentUser(null)} />
                 ) : (
@@ -86,6 +92,9 @@ export const App = () => {
         <Switch>
           <PrivateRoute path="/restaurants" currentUser={currentUser}>
             <Restaurant restaurants={restaurants} user={currentUser} />
+          </PrivateRoute>
+          <PrivateRoute path="/chat" currentUser={currentUser}>
+            <Chat user={currentUser} />
           </PrivateRoute>
           <Route path="/">
             <Home user={currentUser} users={users} />

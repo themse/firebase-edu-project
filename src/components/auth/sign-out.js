@@ -1,16 +1,11 @@
 import React from "react";
 import { auth } from "../../common/firebase";
 
-export const SignOut = ({ onClick = null }) => (
+export const SignOut = ({ signOutHandler }) => (
   <button
     type="button"
     className="btn btn-link nav-link"
-    onClick={() => {
-      auth.signOut();
-      if (onClick) {
-        onClick();
-      }
-    }}
+    onClick={signOutHandler}
   >
     Sign Out
   </button>
