@@ -6,9 +6,15 @@ export const Restaurant = ({ restaurants, user }) => {
   return (
     <div className="container">
       <p className="display-4">Restaurants</p>
-      <NewRestaurant />
       <div className="row">
-        <RestaurantList restaurants={restaurants} user={user} />
+        <div className="col-sm-9">
+          <div className="row">
+            <RestaurantList restaurants={restaurants} user={user} />
+          </div>
+        </div>
+        <div className="col-sm-3">
+          <NewRestaurant user={user} />
+        </div>
       </div>
     </div>
   );

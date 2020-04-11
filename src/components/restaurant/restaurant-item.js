@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 
 export const RestaurantItem = ({
   name,
+  imageUrl,
   user,
   handleSelect,
   handleDeselect,
@@ -11,6 +12,7 @@ export const RestaurantItem = ({
 
   return (
     <div className="card mb-3">
+      {imageUrl && <img src={imageUrl} className="card-img-top" alt={name} />}
       <div className="card-body">
         <h5 className="card-title">
           {name}{" "}
