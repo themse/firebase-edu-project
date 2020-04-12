@@ -1,10 +1,10 @@
-import { SIGN_IN, SIGN_OUT } from "./const";
+import { SIGN_IN, SIGN_OUT } from './const';
 
 export const signIn = (user) => ({
-  type: SIGN_IN,
-  payload: user,
+	type: SIGN_IN,
+	payload: user,
 });
 
 export const signOut = () => ({
-  type: SIGN_OUT,
+	type: SIGN_OUT,
 });
