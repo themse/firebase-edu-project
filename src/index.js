@@ -8,12 +8,14 @@ import { rootReducer } from './store';
 
 import App from './containers/app-container';
 import { startListeningToAuthChanges } from './store/auth/thunks';
+import { startListeningForUsers } from './store/users/thunks';
 
 const middlewares = [thunk];
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares)));
 
 store.dispatch(startListeningToAuthChanges());
+store.dispatch(startListeningForUsers());
 
 render(
     <Provider store={store}>

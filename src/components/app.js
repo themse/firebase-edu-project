@@ -9,14 +9,10 @@ import { Chat } from './chat';
 import { PrivateRoute } from '../common/middleware/private-route';
 import { Loader } from '../components/loader';
 
-export const App = ({ auth, signIn, signOut }) => {
-    const [users, setUsers] = useState({});
-
+export const App = ({ auth, users, signIn, signOut }) => {
     const [restaurants, setRestaurant] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const [userRef, setUserRef] = useState(null);
-    const usersRef = database.ref('/users');
     const restaurantRef = database.ref('/restaurants');
 
     useEffect(() => {
@@ -26,31 +22,11 @@ export const App = ({ auth, signIn, signOut }) => {
             }
         });
 
-        if (auth) {
-            setUserRef(usersRef.child(auth.uid));
-        }
-
         // TODO ordering don't work
         restaurantRef.orderByChild('name').on('value', (snapshot) => {
             setRestaurant([...Object.entries(snapshot.val())]);
         });
-
-        usersRef.on('value', (snapshot) => {
-            setUsers(snapshot.val());
-        });
     }, []);
-
-    useEffect(() => {
-        if (userRef && auth) {
-            userRef.once('value', (snapshot) => {
-                if (snapshot.val()) {
-                    return;
-                }
-                const { displayName, photoURL, uid, email } = auth;
-                userRef.set({ displayName, photoURL, uid, email });
-            });
-        }
-    }, [userRef]);
 
     return isLoading ? (
         <Loader />
