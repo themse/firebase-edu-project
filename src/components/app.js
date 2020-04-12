@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { database } from '../common/firebase';
 import { SignIn } from './auth/sing-in';
 import { SignOut } from './auth/sign-out';
-import { Restaurant } from './restaurant';
+import Restaurant from '../containers/restaurant-container';
 import { Home } from './home';
 import { Chat } from './chat';
 import { PrivateRoute } from '../common/middleware/private-route';
@@ -63,7 +63,7 @@ export const App = ({ auth, users, signIn, signOut }) => {
                 </nav>
                 <Switch>
                     <PrivateRoute path="/restaurants" currentUser={auth}>
-                        <Restaurant restaurants={restaurants} user={auth} />
+                        <Restaurant />
                     </PrivateRoute>
                     <PrivateRoute path="/chat" currentUser={auth}>
                         <Chat user={auth} />

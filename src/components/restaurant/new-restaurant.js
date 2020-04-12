@@ -1,41 +1,23 @@
 import React, { useState, useRef } from 'react';
-import { database, storage } from '../../common/firebase';
 import { Loader } from '../loader';
 
-export const NewRestaurant = ({ user }) => {
-    const restaurantsRef = database.ref('/restaurants');
-    const storageRef = storage.ref('/restaurants').child(user.uid);
-
+export const NewRestaurant = ({ user, addHandle }) => {
     const [name, setName] = useState('');
     const [file, setFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    // TODO move to redux
     const [isLoading, setIsLoading] = useState(false);
 
     const inputFileRef = useRef(null);
 
     const onSubmit = async (event) => {
         event.preventDefault();
-        const newRestaurant = {};
 
         if (name.length === 0) {
             return;
         }
-        newRestaurant.name = name;
 
-        if (file) {
-            const uploadTask = storageRef.child(file.name).put(file, { contentType: file.type });
-
-            uploadTask.on('state_changed', (snapshot) => {
-                const download = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                setIsLoading(download !== 100);
-            });
-
-            newRestaurant.imageUrl = await uploadTask.then((snapshot) =>
-                snapshot.ref.getDownloadURL()
-            );
-        }
-
-        restaurantsRef.push(newRestaurant);
+        await addHandle(name, file);
 
         setName('');
         setFile(null);

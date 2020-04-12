@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { App } from '../components/app';
 import { signInRequest, signOutRequest } from '../store/auth/thunks';
 
-const mapStateToProps = ({ auth, users }) => ({ auth, users });
+const mapStateToProps = ({ auth, users, restaurants }) => ({ auth, users, restaurants });
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {

@@ -9,6 +9,7 @@ import { rootReducer } from './store';
 import App from './containers/app-container';
 import { startListeningToAuthChanges } from './store/auth/thunks';
 import { startListeningForUsers } from './store/users/thunks';
+import { startListeningForRestaurants } from './store/restaurants/thunks';
 
 const middlewares = [thunk];
 
@@ -16,6 +17,7 @@ const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...mi
 
 store.dispatch(startListeningToAuthChanges());
 store.dispatch(startListeningForUsers());
+store.dispatch(startListeningForRestaurants());
 
 render(
     <Provider store={store}>
