@@ -14,9 +14,7 @@ export const restaurantsReducer = (state = initialState, action) => {
         }
         case UPDATE_RESTAURANT: {
             return state.map((restaurant) => {
-                return restaurant.uid === action.payload.uid
-                    ? { ...restaurant, ...action.payload }
-                    : restaurant;
+                return restaurant.uid === action.payload.uid ? action.payload : restaurant;
             });
         }
         default: {
