@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Loader } from '../loader';
 
-export const NewRestaurant = ({ user, addHandle }) => {
+export const NewRestaurant = ({ handleAdd }) => {
     const [name, setName] = useState('');
     const [file, setFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
@@ -17,7 +17,7 @@ export const NewRestaurant = ({ user, addHandle }) => {
             return;
         }
 
-        await addHandle(name, file);
+        await handleAdd(name, file);
 
         setName('');
         setFile(null);

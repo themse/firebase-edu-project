@@ -1,5 +1,5 @@
 import { database, storage } from '../../common/firebase';
-import { addRestaurant, removeRestaurant } from './actions';
+import { addRestaurant, removeRestaurant, updateRestaurant } from './actions';
 
 const restaurantsRef = database.ref('/restaurants');
 const storageRef = storage.ref('/restaurants');
@@ -28,14 +28,33 @@ export const addRestaurantRequest = (name, file = null) => async (_, getState) =
     restaurantsRef.push(newRestaurant);
 };
 
-export const removeRestaurantRequest = () => async (dispatch) => {};
+export const removeRestaurantRequest = (key) => async () => {
+    if (window.confirm('Are you sure?')) {
+        // TODO add ability to delete only yours restaurants
+        restaurantsRef.child(key).remove();
+    }
+};
+
+export const selectRestaurantRequest = (key) => async (_, getState) => {
+    const { auth } = getState();
+    restaurantsRef.child(key).child('votes').child(auth.uid).set(auth.displayName);
+};
+
+export const deselectRestaurantRequest = (key) => async (_, getState) => {
+    const { auth } = getState();
+    restaurantsRef.child(key).child('votes').child(auth.uid).remove();
+};
 
 export const startListeningForRestaurants = () => async (dispatch) => {
     restaurantsRef.on('child_added', (snapshot) => {
         dispatch(addRestaurant({ ...snapshot.val(), uid: snapshot.key }));
     });
 
-    // restaurantsRef.on('child_removed', (snapshot) => {
-    //     dispatch(removeRestaurant(snapshot))
-    // })
+    restaurantsRef.on('child_changed', (snapshot) => {
+        dispatch(updateRestaurant({ ...snapshot.val(), uid: snapshot.key }));
+    });
+
+    restaurantsRef.on('child_removed', (snapshot) => {
+        dispatch(removeRestaurant(snapshot.key));
+    });
 };

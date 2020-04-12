@@ -1,4 +1,4 @@
-import { ADD_RESTAURANT, REMOVE_RESTAURANT } from './const';
+import { ADD_RESTAURANT, REMOVE_RESTAURANT, UPDATE_RESTAURANT } from './const';
 
 const initialState = [];
 
@@ -11,6 +11,13 @@ export const restaurantsReducer = (state = initialState, action) => {
         }
         case REMOVE_RESTAURANT: {
             return state.filter((restaurant) => restaurant.uid !== action.payload);
+        }
+        case UPDATE_RESTAURANT: {
+            return state.map((restaurant) => {
+                return restaurant.uid === action.payload.uid
+                    ? { ...restaurant, ...action.payload }
+                    : restaurant;
+            });
         }
         default: {
             return state;

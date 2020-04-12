@@ -1,7 +1,12 @@
 import { bindActionCreators } from 'redux';
-import { Restaurant } from '../components/restaurant';
-import { addRestaurantRequest, removeRestaurantRequest } from '../store/restaurants/thunks';
 import { connect } from 'react-redux';
+import { Restaurant } from '../components/restaurant';
+import {
+    addRestaurantRequest,
+    removeRestaurantRequest,
+    selectRestaurantRequest,
+    deselectRestaurantRequest,
+} from '../store/restaurants/thunks';
 
 const mapStateToProps = ({ restaurants, auth }) => ({ restaurants, auth });
 
@@ -10,6 +15,8 @@ const mapDispatchToProps = (dispatch) =>
         {
             addRestaurant: addRestaurantRequest,
             removeRestaurant: removeRestaurantRequest,
+            selectRestaurant: selectRestaurantRequest,
+            deselectRestaurant: deselectRestaurantRequest,
         },
         dispatch
     );

@@ -10,21 +10,13 @@ import { PrivateRoute } from '../common/middleware/private-route';
 import { Loader } from '../components/loader';
 
 export const App = ({ auth, users, signIn, signOut }) => {
-    const [restaurants, setRestaurant] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-
-    const restaurantRef = database.ref('/restaurants');
 
     useEffect(() => {
         database.ref().on('value', (snapshot) => {
             if (snapshot) {
                 setIsLoading(false);
             }
-        });
-
-        // TODO ordering don't work
-        restaurantRef.orderByChild('name').on('value', (snapshot) => {
-            setRestaurant([...Object.entries(snapshot.val())]);
         });
     }, []);
 
